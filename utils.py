@@ -1,14 +1,19 @@
-import logging
-
-logger = logging.getLogger(__name__)
+# Utility functions like deleting messages after a delay
 
 async def delete_message(context):
+    """Delete the message after a certain time."""
     try:
-        job_context = context.job.context
-        chat_id = job_context["chat_id"]
-        message_id = job_context["message_id"]
-
-        await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
-        logger.info(f"Deleted message {message_id} from chat {chat_id}")
+        message = context.job.context
+        await context.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
+        print(f"Deleted message {message.message_id}")
     except Exception as e:
-        logger.error(f"Error deleting message: {e}")
+        print(f"Failed to delete message: {e}")
+
+async def delete_reply(context):
+    """Delete the reply message after a certain time."""
+    try:
+        message = context.job.context
+        await context.bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
+        print(f"Deleted reply message {message.message_id}")
+    except Exception as e:
+        print(f"Failed to delete reply: {e}")
