@@ -1,19 +1,15 @@
-import sys
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 from config import ADMIN_ID
 from utils import delete_message
 from datetime import timedelta
-
-# Database setup
 from pymongo import MongoClient
 from config import MONGO_URL
 
 client = MongoClient(MONGO_URL)
-db = client.telegram_bot  # Database name
-users_collection = db.users  # Collection name
+db = client.telegram_bot
+users_collection = db.users
 
-# Add or update a user in the database
 def save_user(user_id, username):
     users_collection.update_one(
         {"user_id": user_id},
@@ -21,11 +17,10 @@ def save_user(user_id, username):
         upsert=True
     )
 
-# Command: /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     username = update.effective_chat.username
-    save_user(chat_id, username)  # Save user to the database
+    save_user(chat_id, username)
 
     image_url = "https://i.ibb.co/SB9XZ6Z/photo-2024-12-14-08-27-56-7448181445471764512.jpg"
     keyboard = [
@@ -42,5 +37,4 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-    # Schedule deletion of the photo message after 2 minutes
     context.job_queue.run_once(delete_message, timedelta(minutes=2), context=sent_message)
