@@ -24,8 +24,6 @@ async def main():
     # Start the webhook
     await application.run_webhook(listen="0.0.0.0", port=80, url_path=WEBHOOK_URL)
 
+# Directly run the main async function without asyncio.run()
 if __name__ == '__main__':
-    import asyncio
-
-    # Remove asyncio.run() and directly call the main function to let Telegram handle the loop
-    asyncio.run(main())  # Safely running the async function
+    main()  # Let Telegram handle the event loop
