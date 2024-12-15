@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: telegram-bot
+    env: python
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    startCommand: "python main.py"
+    plan: free
+    envVars:
+      - key: BOT_TOKEN
+        value: "YOUR_BOT_TOKEN"  # Replace with your actual BOT_TOKEN
+      - key: WEBHOOK_URL
+        value: "https://your-app-name.onrender.com"  # Replace with your actual Render URL
+      - key: MONGO_URL
+        value: "mongodb+srv://<your_mongo_credentials>"
+      - key: ADMIN_ID
+        value: "YOUR_ADMIN_ID"  # Replace with your admin's Telegram user ID
