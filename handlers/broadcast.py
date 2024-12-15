@@ -1,18 +1,14 @@
-# handlers/broadcast.py
 from telegram import Update
 from telegram.ext import ContextTypes
 from config import ADMIN_ID
 from pymongo import MongoClient
 from config import MONGO_URL
 
-# Database setup
 client = MongoClient(MONGO_URL)
 db = client.telegram_bot
-users_collection = db.users  # Collection to store user information
+users_collection = db.users
 
-# Command: /broadcast (Admin only)
 async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Send a broadcast message to all users."""
     if update.effective_user.id != ADMIN_ID:
         await update.message.reply_text("Unauthorized! Admins only.")
         return
