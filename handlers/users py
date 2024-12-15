@@ -1,0 +1,30 @@
+# handlers/users.py
+
+from telegram import Update
+from telegram.ext import ContextTypes
+from pymongo import MongoClient
+from config import MONGO_URL
+
+# Database setup
+client = MongoClient(MONGO_URL)
+db = client.telegram_bot
+users_collection = db.users  # Collection to store user information
+
+# Add or update a user in the database
+def save_user(user_id, username):
+    """Save or update user details in the database."""
+    users_collection.update_one(
+        {"user_id": user_id},
+        {"$set": {"user_id": user_id, "username": username}},
+        upsert=True
+    )
+
+# Command: /start (for new users)
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle the /start command."""
+    user_id = update.effective_user.id
+    username = update.effective_user.username
+    save_user(user_id, username)
+
+    # Respond with a welcome message
+    await update.message.reply_text("Welcome to the bot!")
