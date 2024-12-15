@@ -2,13 +2,15 @@ services:
   - type: web
     name: telegram-bot
     env: python
-    buildCommand: |
-      pip install --upgrade pip
-      pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt
     startCommand: python main.py
     plan: free
     envVars:
       - key: BOT_TOKEN
-        value: "7524278392:AAGd21uCuExw-JAuko9UC5l9GLrqmwy-mh4"
+        value: "your-bot-token-here"  # Replace this in the Render dashboard
+      - key: MONGO_URL
+        value: "your-mongo-url-here"  # Replace this in the Render dashboard
+      - key: ADMIN_ID
+        value: "your-admin-id-here"  # Replace this in the Render dashboard
       - key: WEBHOOK_URL
-        value: "https://start-to-messages.onrender.com"
+        value: "your-webhook-url-here"  # Replace this in the Render dashboard
